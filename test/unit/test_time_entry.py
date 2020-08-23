@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import unittest
 
-from time_entry import TimeEntry
+from lib.time_entry import TimeEntry
 
 
 class TestTimeEntry(unittest.TestCase):
