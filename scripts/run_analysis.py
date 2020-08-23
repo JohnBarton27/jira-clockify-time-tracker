@@ -31,7 +31,8 @@ options = {
     "sonar.python.coverage.reportPaths": "coverage.xml"
 }
 
-command = "sonar-scanner -X "
+sonar_scanner_location = "/opt/sonar-scanner/current/bin/sonar-scanner"
+command = "{} -X ".format(sonar_scanner_location)
 
 for option in options:
     if isinstance(options[option], list):
