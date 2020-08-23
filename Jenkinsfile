@@ -13,6 +13,7 @@ pipeline {
         stage ('Analyze') {
             steps {
                 sh '''#!/bin/bash
+                      source ~/.bashrc
                       python scripts/run_analysis.py $BRANCH_NAME
                 '''
             }
