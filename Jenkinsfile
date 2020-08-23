@@ -9,7 +9,7 @@ pipeline {
         }
         stage ('Clean') {
             steps {
-                sh 'rm -rf *'
+                sh 'rm -rf *; rm -rf *.git'
             }
         }
     }
