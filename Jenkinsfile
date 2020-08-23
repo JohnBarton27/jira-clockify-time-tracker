@@ -9,7 +9,7 @@ pipeline {
         }
         stage ('Analyze') {
             steps {
-                sh 'python run_analysis.py $BRANCH_NAME'
+                sh 'python scripts/run_analysis.py $BRANCH_NAME'
             }
         }
         stage ('Clean') {
