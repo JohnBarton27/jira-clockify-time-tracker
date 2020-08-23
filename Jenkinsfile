@@ -7,5 +7,10 @@ pipeline {
                 step([$class: 'Publisher', reportFilenamePattern: 'test-reports/*.xml'])
             }
         }
+        stage ('Clean') {
+            steps {
+                sh 'rm -rf *'
+            }
+        }
     }
 }
