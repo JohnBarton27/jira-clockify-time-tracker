@@ -32,7 +32,7 @@ options = {
 }
 
 sonar_scanner_location = "/opt/sonar-scanner/current/bin/sonar-scanner"
-command = "{} -X ".format(sonar_scanner_location)
+command = "{} ".format(sonar_scanner_location)
 
 for option in options:
     if isinstance(options[option], list):
