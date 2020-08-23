@@ -20,7 +20,7 @@ pipeline {
         }
         stage ('Clean') {
             steps {
-                sh 'rm -rf *; rm -rf *.git'
+                sh 'rm -rf *; rm -rf .git*; rm -rf .coverage'
             }
         }
     }
