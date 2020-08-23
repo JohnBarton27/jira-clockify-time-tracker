@@ -24,7 +24,7 @@ options = {
     "sonar.host.url": "https://sonarcloud.io",
     "sonar.branch.name": branch,
     "sonar.sources": ["lib"],
-    # "sonar.tests": "test",
+    "sonar.tests": "test",
     "sonar.exclusions": ["scripts/"],
     "sonar.python.coverage.reportPaths": "coverage.xml"
 }
@@ -38,5 +38,5 @@ for option in options:
 
 command = command.strip()
 print(command)
-proc = subprocess.Popen(command.split(" "), shell=False)
+proc = subprocess.Popen(command, shell=True)
 proc.communicate()
