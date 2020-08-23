@@ -9,3 +9,5 @@ a run of the main Python script (this can easily be achieved with a CI/CD tool l
 ## Running
 ### Unit Tests
 Unit tests require the 'xmlrunner' module. Install by running `pip3 install xmlrunner`.
+
+For code coverage, the 'coverage' module is required. Install by running `pip3 install coverage`.
