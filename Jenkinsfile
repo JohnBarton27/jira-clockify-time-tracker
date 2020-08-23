@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('Test') {
             steps {
-                sh 'export PYTHONPATH=$(pwd); python test/unit/run_tests.py'
+                sh 'source ~/.bashrc; export PYTHONPATH=$(pwd); python test/unit/run_tests.py'
                 junit 'test-reports/*.xml'
             }
         }
