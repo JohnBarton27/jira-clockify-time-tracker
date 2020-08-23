@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('Test') {
             steps {
-                bash '''#!/bin/bash
+                sh '''#!/bin/bash
                          export PYTHONPATH=$(pwd)
                          python test/unit/run_tests.py
                 '''
@@ -12,7 +12,7 @@ pipeline {
         }
         stage ('Analyze') {
             steps {
-                bash '''$!/bin/bash
+                sh '''$!/bin/bash
                         python scripts/run_analysis.py $BRANCH_NAME
                 '''
             }
