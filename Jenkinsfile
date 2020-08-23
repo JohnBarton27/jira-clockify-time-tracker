@@ -4,7 +4,7 @@ pipeline {
         stage ('Test') {
             steps {
                 sh 'export PYTHONPATH=$(pwd); python test/unit/run_tests.py'
-                step([$class: 'Publisher', reportFilenamePattern: 'test-reports/*.xml'])
+                junit 'test-reports/*.xml'
             }
         }
         stage ('Clean') {
