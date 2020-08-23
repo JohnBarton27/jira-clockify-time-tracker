@@ -4,16 +4,16 @@ pipeline {
         stage ('Test') {
             steps {
                 sh '''#!/bin/bash
-                         export PYTHONPATH=$(pwd)
-                         python test/unit/run_tests.py
+                      export PYTHONPATH=$(pwd)
+                      python test/unit/run_tests.py
                 '''
                 junit 'test-reports/*.xml'
             }
         }
         stage ('Analyze') {
             steps {
-                sh '''$!/bin/bash
-                        python scripts/run_analysis.py $BRANCH_NAME
+                sh '''#!/bin/bash
+                      python scripts/run_analysis.py $BRANCH_NAME
                 '''
             }
         }
