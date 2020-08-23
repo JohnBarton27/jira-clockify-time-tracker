@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage ('Test') {
             steps {
-                sh 'python -m unittest discover test'
+                sh 'export PYTHONPATH=$(pwd); python test/unit/run_tests.py'
+                step([$class: 'Publisher', reportFilenamePattern: 'test-reports/*.xml'])
             }
         }
     }
