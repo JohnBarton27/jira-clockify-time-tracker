@@ -11,3 +11,5 @@ a run of the main Python script (this can easily be achieved with a CI/CD tool l
 Unit tests require the 'xmlrunner' module. Install by running `pip3 install xmlrunner`.
 
 For code coverage, the 'coverage' module is required. Install by running `pip3 install coverage`.
+
+For SonarQube analysis, the sonar-scanner needs to be installed and on the user's PATH, along with a correctly-set `SONAR_TOKEN` environment variable.
