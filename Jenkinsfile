@@ -14,6 +14,7 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                       source ~/.bashrc
+                      echo "$(which coverage)"
                       python scripts/run_analysis.py $BRANCH_NAME
                 '''
             }
