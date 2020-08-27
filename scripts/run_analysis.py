@@ -9,6 +9,9 @@ parser.add_argument("branch_name", help="Git branch being analyzed")
 args = parser.parse_args()
 branch = args.branch_name
 
+if branch.startswith("origin/"):
+    branch = branch.split("origin/")[-1]
+
 coverage_location = os.path.join(expanduser("~"), ".local/bin/coverage")
 
 # Run Tests (for Coverage report)
