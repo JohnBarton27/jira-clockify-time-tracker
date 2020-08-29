@@ -1,6 +1,9 @@
 from datetime import datetime
 import re
 
+from lib.exceptions import NoJiraKayFoundException
+from lib.jira_api_call import JiraApiCall, RequestTypes
+
 
 class TimeEntry:
 
@@ -41,3 +44,15 @@ class TimeEntry:
             return None
 
         return key.group(1)
+
+    def add_to_jira(self):
+        """
+        Adds this TimeEntry to its associated Jira issue.
+        """
+        if not self.jira_key:
+            raise NoJiraKayFoundException("No Jira key associated with this TimeEntry, "
+                                          "so it will not be added to Jira.")
+
+        url = "rest/api/3/issue/{}".format(self.jira_key)
+        response = JiraApiCall(RequestTypes.GET, url).exec()
+        return response
