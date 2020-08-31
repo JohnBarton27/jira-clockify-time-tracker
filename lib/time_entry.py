@@ -1,4 +1,5 @@
 from datetime import datetime
+import pytz
 import re
 
 from lib.exceptions import NoJiraKayFoundException
@@ -45,6 +46,25 @@ class TimeEntry:
 
         return key.group(1)
 
+    @property
+    def worklog_comment(self):
+        comment = {
+            "version": 1,
+            "type": "doc",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": self.description
+                        }
+                    ]
+                }
+            ]
+        }
+        return comment
+
     def add_to_jira(self):
         """
         Adds this TimeEntry to its associated Jira issue.
@@ -53,6 +73,20 @@ class TimeEntry:
             raise NoJiraKayFoundException("No Jira key associated with this TimeEntry, "
                                           "so it will not be added to Jira.")
 
-        url = "rest/api/3/issue/{}".format(self.jira_key)
-        response = JiraApiCall(RequestTypes.GET, url).exec()
+        url = "rest/api/3/issue/{}/worklog".format(self.jira_key)
+        localized_start = pytz.utc.localize(self.start)
+        data = {
+            "started": TimeEntry.time_format(localized_start),
+            "timeSpentSeconds": self.duration.seconds,
+            "comment": self.worklog_comment
+        }
+        response = JiraApiCall(RequestTypes.POST, url, data=data).exec()
         return response
+
+    @staticmethod
+    def time_format(dt):
+        return "%s:%.3f%s" % (
+            dt.strftime('%Y-%m-%dT%H:%M'),
+            float("%.3f" % (dt.second + dt.microsecond / 1e6)),
+            dt.strftime('%z')
+        )

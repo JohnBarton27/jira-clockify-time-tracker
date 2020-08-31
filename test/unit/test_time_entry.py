@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
+import pytz
 import unittest
+from unittest.mock import patch, MagicMock, PropertyMock
 
 from lib.time_entry import TimeEntry
+from lib.jira_api_call import RequestTypes
 
 
 class TestTimeEntry(unittest.TestCase):
@@ -68,6 +71,75 @@ class TestTimeEntry(unittest.TestCase):
         te = TimeEntry(start, end, description)
 
         self.assertIsNone(te.jira_key)
+
+    def test_worklog_comment(self):
+        """TimeEntry.worklog_comment"""
+        start = datetime(year=2020, month=8, day=16, hour=18)
+        end = datetime(year=2020, month=8, day=16, hour=18, minute=30)
+        description = "I'm doing some work"
+
+        te = TimeEntry(start, end, description)
+
+        correct_wl_comment = {
+            "version": 1,
+            "type": "doc",
+            "content": [
+                {
+                    "type": "paragraph",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "I'm doing some work"
+                        }
+                    ]
+                }
+            ]
+        }
+        wl_comment = te.worklog_comment
+
+        self.assertEqual(wl_comment, correct_wl_comment)
+
+    @patch("lib.time_entry.TimeEntry.worklog_comment", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.jira_key", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.time_format")
+    @patch("lib.time_entry.JiraApiCall.exec")
+    @patch("lib.time_entry.JiraApiCall.__init__")
+    def test_add_to_jira(self, m_jac_init, m_exec, m_time_format, m_jira_key, m_wlog_comment):
+        """TimeEntry.add_to_jira"""
+        start = datetime(year=2020, month=8, day=16, hour=18)
+        end = datetime(year=2020, month=8, day=16, hour=18, minute=30)
+        description = "TEST-123 I'm doing some work"
+
+        te = TimeEntry(start, end, description)
+
+        m_time_format.return_value = "2020-08-16"
+        m_jac_init.return_value = None
+        m_exec.return_value = MagicMock()
+        m_jira_key.return_value = "TEST-123"
+        m_wlog_comment.return_value = "COMMENT"
+
+        correct_data = {
+            "started": "2020-08-16",
+            "timeSpentSeconds": 1800,
+            "comment": "COMMENT"
+        }
+
+        response = te.add_to_jira()
+
+        m_time_format.assert_called_with(pytz.utc.localize(start))
+        m_jac_init.assert_called_with(RequestTypes.POST, "rest/api/3/issue/TEST-123/worklog", data=correct_data)
+        m_exec.assert_called()
+
+        self.assertEqual(response, m_exec.return_value)
+
+    def test_time_format(self):
+        """TimeEntry.time_format.no_seconds"""
+        start = datetime(year=2020, month=8, day=16, hour=18, minute=15, tzinfo=pytz.utc)
+
+        correct_tf = "2020-08-16T18:15:0.000+0000"
+        returned_tf = TimeEntry.time_format(start)
+
+        self.assertEqual(returned_tf, correct_tf)
 
 
 if __name__ == '__main__':
