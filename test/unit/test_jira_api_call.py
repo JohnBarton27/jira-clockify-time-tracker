@@ -13,12 +13,21 @@ class TestJiraApiCall(unittest.TestCase):
         self.m_var_value = var_value_patch.start()
         self.addCleanup(var_value_patch.stop)
 
-    def test_init(self):
-        """JiraApiCall.__init__"""
+    def test_init_no_data(self):
+        """JiraApiCall.__init__.no_data"""
         api_call = JiraApiCall(RequestTypes.GET, "sample")
 
         self.assertEqual(api_call.type, RequestTypes.GET)
         self.assertEqual(api_call.url, "sample")
+        self.assertIsNone(api_call.data)
+
+    def test_init_with_data(self):
+        """JiraApiCall.__init__.with_data"""
+        api_call = JiraApiCall(RequestTypes.POST, "sample", data={"name": "John"})
+
+        self.assertEqual(api_call.type, RequestTypes.POST)
+        self.assertEqual(api_call.url, "sample")
+        self.assertEqual(api_call.data, {"name": "John"})
 
     def test_jira_email(self):
         """JiraApiCall.jira_email"""
@@ -130,7 +139,7 @@ class TestJiraApiCall(unittest.TestCase):
 
         response = api_call.exec()
 
-        m_get.assert_called_with("mycf.atl.net/sample", headers={"X-Atlassian-Token": "no-check"}, auth=auth)
+        m_get.assert_called_with("mycf.atl.net/sample", headers={"X-Atlassian-Token": "no-check"}, auth=auth, json=None)
         self.assertEqual(response, m_response)
 
 

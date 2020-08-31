@@ -1,4 +1,5 @@
 from enum import Enum
+import json
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -32,9 +33,10 @@ class JiraApiCall:
     jira_token_var_name = "JIRA_API_TOKEN"
     jira_hostname_var_name = "JIRA_HOSTNAME"
 
-    def __init__(self, req_type: RequestTypes, url: str):
+    def __init__(self, req_type: RequestTypes, url: str, data: dict = None):
         self.type = req_type
         self.url = url
+        self.data = data
 
     @property
     def jira_email(self):
@@ -78,5 +80,6 @@ class JiraApiCall:
         header = {"X-Atlassian-Token": "no-check"}
         auth = HTTPBasicAuth(self.jira_email, self.jira_token)
         full_url = "{}{}".format(self.jira_hostname, self.url)
-        response = self.type.requests_function(full_url, headers=header, auth=auth)
+
+        response = self.type.requests_function(full_url, headers=header, auth=auth, json=self.data)
         return response
