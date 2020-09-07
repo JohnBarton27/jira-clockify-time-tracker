@@ -26,3 +26,10 @@ class NoJiraKayFoundException(Exception):
     Raised when parsing a TimeEntry, but no Jira Key was found.
     """
     pass
+
+
+class ClockifyApiKeyNotSetException(Exception):
+    """
+    Raised when attempting to perform a Clockify REST API call, but the CLOCKIFY_API_KEY variable has not been set.
+    """
+    pass

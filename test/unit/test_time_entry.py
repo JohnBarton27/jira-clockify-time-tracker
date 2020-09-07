@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import patch, MagicMock, PropertyMock
 
 from lib.time_entry import TimeEntry
-from lib.jira_api_call import RequestTypes
+from lib.api_call import RequestTypes
 
 
 class TestTimeEntry(unittest.TestCase):

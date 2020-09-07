@@ -1,42 +1,16 @@
-from enum import Enum
-import json
-import requests
 from requests.auth import HTTPBasicAuth
 
+from lib.api_call import ApiCall
 from lib.variable import Variable
 from lib.exceptions import JiraApiTokenNotSetException, JiraEmailNotSetException, JiraHostnameNotSetException
 
 
-class RequestTypes(Enum):
-
-    GET = 1
-    PUT = 2
-    POST = 3
-    DELETE = 4
-
-    @property
-    def requests_function(self):
-        if self.name == "GET":
-            return requests.get
-        elif self.name == "PUT":
-            return requests.put
-        elif self.name == "POST":
-            return requests.post
-        elif self.name == "DELETE":
-            return requests.delete
-
-
-class JiraApiCall:
+class JiraApiCall(ApiCall):
 
     # Environment Variable Names
     jira_email_var_name = "JIRA_EMAIL"
     jira_token_var_name = "JIRA_API_TOKEN"
     jira_hostname_var_name = "JIRA_HOSTNAME"
-
-    def __init__(self, req_type: RequestTypes, url: str, data: dict = None):
-        self.type = req_type
-        self.url = url
-        self.data = data
 
     @property
     def jira_email(self):

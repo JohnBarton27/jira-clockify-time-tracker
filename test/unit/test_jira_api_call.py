@@ -2,7 +2,8 @@ from requests.auth import HTTPBasicAuth
 import unittest
 from unittest.mock import MagicMock, patch, PropertyMock
 
-from lib.jira_api_call import JiraApiCall, RequestTypes
+from lib.jira_api_call import JiraApiCall
+from lib.api_call import RequestTypes
 from lib.exceptions import JiraEmailNotSetException, JiraApiTokenNotSetException, JiraHostnameNotSetException
 
 
@@ -121,7 +122,7 @@ class TestJiraApiCall(unittest.TestCase):
     @patch("lib.jira_api_call.JiraApiCall.jira_hostname", new_callable=PropertyMock)
     @patch("lib.jira_api_call.JiraApiCall.jira_token", new_callable=PropertyMock)
     @patch("lib.jira_api_call.JiraApiCall.jira_email", new_callable=PropertyMock)
-    @patch("lib.jira_api_call.requests.get")
+    @patch("requests.get")
     @patch("lib.jira_api_call.JiraApiCall.validate_environment")
     def test_exec(self, m_val_env, m_get, m_jira_email, m_jira_token, m_jira_hostname):
         """JiraApiCall.exec"""

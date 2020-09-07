@@ -20,3 +20,6 @@ Unit tests require the 'xmlrunner' module. Install by running `pip3 install xmlr
 For code coverage, the 'coverage' module is required. Install by running `pip3 install coverage`.
 
 For SonarQube analysis, the sonar-scanner needs to be installed and on the user's PATH, along with a correctly-set `SONAR_TOKEN` environment variable.
+
+## Integration with Git Commit Messages
+JCCT can be used to automatically generate Clockify time entries, based on your Git commit history.

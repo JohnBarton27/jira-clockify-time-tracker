@@ -3,7 +3,9 @@ import pytz
 import re
 
 from lib.exceptions import NoJiraKayFoundException
-from lib.jira_api_call import JiraApiCall, RequestTypes
+from lib.jira_api_call import JiraApiCall
+from lib.api_call import RequestTypes
+from lib.variable import Variable
 
 
 class TimeEntry:
@@ -90,3 +92,10 @@ class TimeEntry:
             float("%.3f" % (dt.second + dt.microsecond / 1e6)),
             dt.strftime('%z')
         )
+
+    @staticmethod
+    def start_clockify_timer():
+        """
+        Starts a new Clockify Time Entry
+        """
+        clockify_api_token = Variable("CLOCKIFY_API_TOKEN")
