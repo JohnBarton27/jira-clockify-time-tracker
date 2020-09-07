@@ -11,6 +11,8 @@ parser.add_argument("description", help="Description of the time entry (used to 
 
 args = parser.parse_args()
 
+logging.basicConfig(level=logging.INFO)
+
 # Create TimeEntry Object
 start_dt = datetime.strptime(args.start_time, "%Y-%m-%dT%H:%M:%SZ")
 end_dt = datetime.strptime(args.end_time, "%Y-%m-%dT%H:%M:%SZ")
