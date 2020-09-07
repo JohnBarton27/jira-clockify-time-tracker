@@ -81,5 +81,7 @@ class JiraApiCall:
         auth = HTTPBasicAuth(self.jira_email, self.jira_token)
         full_url = "{}{}".format(self.jira_hostname, self.url)
 
+        print(full_url)
+        print(self.data)
         response = self.type.requests_function(full_url, headers=header, auth=auth, json=self.data)
         return response
