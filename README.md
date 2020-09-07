@@ -7,6 +7,13 @@ Clockify and Jira account information to the local config file. A webhook from y
 a run of the main Python script (this can easily be achieved with a CI/CD tool like Jenkins or Atlassian Bamboo). 
 
 ## Running
+### Environment Variables
+In order to be able to add time entries to Jira, the following environment variables must be set:
+
+- `JIRA_EMAIL` - Email address of the user who will authenticate against the Jira REST API
+- `JIRA_API_TOKEN` - A Jira REST API token for the user with the above `JIRA_EMAIL`, used for authenticating against the Jira REST API
+- `JIRA_HOSTNAME` - Base hostname for your Jira instance
+
 ### Unit Tests
 Unit tests require the 'xmlrunner' module. Install by running `pip3 install xmlrunner`.
 
