@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime
+import logging
 
 from lib.time_entry import TimeEntry
 
@@ -16,3 +17,5 @@ end_dt = datetime.strptime(args.end_time, "%Y-%m-%dT%H:%M:%SZ")
 te = TimeEntry(start_dt, end_dt, args.description)
 
 # Create TimeEntry in Jira
+response = te.add_to_jira()
+logging.info("Response from Time Entry Jira addition: {}".format(response))
