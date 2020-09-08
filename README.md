@@ -14,6 +14,10 @@ In order to be able to add time entries to Jira, the following environment varia
 - `JIRA_API_TOKEN` - A Jira REST API token for the user with the above `JIRA_EMAIL`, used for authenticating against the Jira REST API
 - `JIRA_HOSTNAME` - Base hostname for your Jira instance
 
+You must also set the following environment variables in order to make calls to start/stop timers in Clockify:
+
+- `CLOCKIFY_API_TOKEN` - Your Clockify API token
+
 ### Unit Tests
 Unit tests require the 'xmlrunner' module. Install by running `pip3 install xmlrunner`.
 
