@@ -1,6 +1,8 @@
 # Jira Clockify Time Tracker (JCTT)
 Automatically add Clockify-tracked time entries to Jira Stories
 
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=jira-clockify-time-tracker)](https://sonarcloud.io/dashboard?id=jira-clockify-time-tracker)
+
 ## How it Works
 This is a free library for mapping Clockify entries to Jira issues. To map your Clockify entries to Jira, add your 
 Clockify and Jira account information to the local config file. A webhook from your Clockify account needs to kick off
