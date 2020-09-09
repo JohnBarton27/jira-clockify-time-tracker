@@ -84,6 +84,7 @@ class TestWorkspace(unittest.TestCase):
         self.assertEqual(ws.name, "My Workspace")
         self.assertEqual(ws.id, "123abc")
 
+
 if __name__ == '__main__':
     import xmlrunner
     unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
