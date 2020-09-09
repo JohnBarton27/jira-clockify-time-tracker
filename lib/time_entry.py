@@ -6,7 +6,7 @@ from lib.exceptions import NoJiraKayFoundException
 from lib.api_call import RequestTypes
 from lib.clockify_api_call import ClockifyApiCall
 from lib.jira_api_call import JiraApiCall
-from lib.variable import Variable
+from lib.workspace import Workspace
 
 
 class TimeEntry:
@@ -99,4 +99,15 @@ class TimeEntry:
         """
         Starts a new Clockify Time Entry
         """
-        clockify_api_token = Variable("CLOCKIFY_API_TOKEN")
+        # TODO add support for multiple Workspaces
+        workspace = Workspace.get_all()[0]
+
+        current_time = datetime.now().astimezone(pytz.utc)
+
+        data = {
+            "start": current_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+        }
+
+        response = ClockifyApiCall(RequestTypes.POST, "workspaces/{}/time-entries".format(workspace.id), data=data)\
+            .exec().json()
+        return response

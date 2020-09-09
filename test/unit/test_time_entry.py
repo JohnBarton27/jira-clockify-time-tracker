@@ -9,6 +9,15 @@ from lib.api_call import RequestTypes
 
 class TestTimeEntry(unittest.TestCase):
 
+    def setUp(self) -> None:
+        ws_get_all_patch = patch("lib.time_entry.Workspace.get_all")
+        self.m_ws_get_all = ws_get_all_patch.start()
+        self.addCleanup(ws_get_all_patch.stop)
+
+        clockify_api_exec_patch = patch("lib.time_entry.ClockifyApiCall.exec")
+        self.m_clockify_api_exec = clockify_api_exec_patch.start()
+        self.addCleanup(clockify_api_exec_patch.stop)
+
     def test_init(self):
         """TimeEntry.__init__"""
         start = datetime(year=2020, month=8, day=16, hour=18)
@@ -140,6 +149,21 @@ class TestTimeEntry(unittest.TestCase):
         returned_tf = TimeEntry.time_format(start)
 
         self.assertEqual(returned_tf, correct_tf)
+
+    def test_start_clockify_timer(self):
+        """TimeEntry.start_clockify_timer"""
+        ws = MagicMock()
+        ws.id = 12345
+        api_response = MagicMock()
+        api_json = MagicMock()
+        api_response.json.return_value = api_json
+
+        self.m_ws_get_all.return_value = [ws]
+        self.m_clockify_api_exec.return_value = api_response
+
+        returned_val = TimeEntry.start_clockify_timer()
+
+        self.assertEqual(returned_val, api_json)
 
 
 if __name__ == '__main__':
