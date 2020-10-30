@@ -88,9 +88,11 @@ class TimeEntry:
 
         url = "rest/api/3/issue/{}/worklog".format(self.jira_key)
         localized_start = pytz.utc.localize(self.start)
+
+        rounded_seconds = int(round(self.duration.seconds / 60.0)) * 60
         data = {
             "started": TimeEntry.time_format(localized_start),
-            "timeSpentSeconds": self.duration.seconds,
+            "timeSpentSeconds": rounded_seconds,
             "comment": self.worklog_comment
         }
         response = JiraApiCall(RequestTypes.POST, url, data=data).exec()

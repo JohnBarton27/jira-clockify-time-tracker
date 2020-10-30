@@ -141,6 +141,105 @@ class TestTimeEntry(unittest.TestCase):
 
         self.assertEqual(response, m_exec.return_value)
 
+    @patch("lib.time_entry.TimeEntry.worklog_comment", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.jira_key", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.time_format")
+    @patch("lib.time_entry.JiraApiCall.exec")
+    @patch("lib.time_entry.JiraApiCall.__init__")
+    def test_add_to_jira_round_down(self, m_jac_init, m_exec, m_time_format, m_jira_key, m_wlog_comment):
+        """TimeEntry.add_to_jira.round_down"""
+        start = datetime(year=2020, month=8, day=16, hour=18, minute=25, second=45)
+        end = datetime(year=2020, month=8, day=16, hour=18, minute=30)
+        description = "TEST-123 I'm doing some work"
+
+        te = TimeEntry(start, end, description)
+
+        m_time_format.return_value = "2020-08-16"
+        m_jac_init.return_value = None
+        m_exec.return_value = MagicMock()
+        m_jira_key.return_value = "TEST-123"
+        m_wlog_comment.return_value = "COMMENT"
+
+        correct_data = {
+            "started": "2020-08-16",
+            "timeSpentSeconds": 240,
+            "comment": "COMMENT"
+        }
+
+        response = te.add_to_jira()
+
+        m_time_format.assert_called_with(pytz.utc.localize(start))
+        m_jac_init.assert_called_with(RequestTypes.POST, "rest/api/3/issue/TEST-123/worklog", data=correct_data)
+        m_exec.assert_called()
+
+        self.assertEqual(response, m_exec.return_value)
+
+    @patch("lib.time_entry.TimeEntry.worklog_comment", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.jira_key", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.time_format")
+    @patch("lib.time_entry.JiraApiCall.exec")
+    @patch("lib.time_entry.JiraApiCall.__init__")
+    def test_add_to_jira_round_up(self, m_jac_init, m_exec, m_time_format, m_jira_key, m_wlog_comment):
+        """TimeEntry.add_to_jira.round_up"""
+        start = datetime(year=2020, month=8, day=16, hour=18, minute=29, second=15)
+        end = datetime(year=2020, month=8, day=16, hour=18, minute=30)
+        description = "TEST-123 I'm doing some work"
+
+        te = TimeEntry(start, end, description)
+
+        m_time_format.return_value = "2020-08-16"
+        m_jac_init.return_value = None
+        m_exec.return_value = MagicMock()
+        m_jira_key.return_value = "TEST-123"
+        m_wlog_comment.return_value = "COMMENT"
+
+        correct_data = {
+            "started": "2020-08-16",
+            "timeSpentSeconds": 60,
+            "comment": "COMMENT"
+        }
+
+        response = te.add_to_jira()
+
+        m_time_format.assert_called_with(pytz.utc.localize(start))
+        m_jac_init.assert_called_with(RequestTypes.POST, "rest/api/3/issue/TEST-123/worklog", data=correct_data)
+        m_exec.assert_called()
+
+        self.assertEqual(response, m_exec.return_value)
+
+    @patch("lib.time_entry.TimeEntry.worklog_comment", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.jira_key", new_callable=PropertyMock)
+    @patch("lib.time_entry.TimeEntry.time_format")
+    @patch("lib.time_entry.JiraApiCall.exec")
+    @patch("lib.time_entry.JiraApiCall.__init__")
+    def test_add_to_jira_round_up(self, m_jac_init, m_exec, m_time_format, m_jira_key, m_wlog_comment):
+        """TimeEntry.add_to_jira.round_up"""
+        start = datetime(year=2020, month=8, day=16, hour=18, minute=29, second=15)
+        end = datetime(year=2020, month=8, day=16, hour=18, minute=30)
+        description = "TEST-123 I'm doing some work"
+
+        te = TimeEntry(start, end, description)
+
+        m_time_format.return_value = "2020-08-16"
+        m_jac_init.return_value = None
+        m_exec.return_value = MagicMock()
+        m_jira_key.return_value = "TEST-123"
+        m_wlog_comment.return_value = "COMMENT"
+
+        correct_data = {
+            "started": "2020-08-16",
+            "timeSpentSeconds": 60,
+            "comment": "COMMENT"
+        }
+
+        response = te.add_to_jira()
+
+        m_time_format.assert_called_with(pytz.utc.localize(start))
+        m_jac_init.assert_called_with(RequestTypes.POST, "rest/api/3/issue/TEST-123/worklog", data=correct_data)
+        m_exec.assert_called()
+
+        self.assertEqual(response, m_exec.return_value)
+
     def test_time_format(self):
         """TimeEntry.time_format.no_seconds"""
         start = datetime(year=2020, month=8, day=16, hour=18, minute=15, tzinfo=pytz.utc)
