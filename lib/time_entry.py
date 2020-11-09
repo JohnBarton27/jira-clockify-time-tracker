@@ -119,7 +119,7 @@ class TimeEntry:
         description = TimeEntry._get_description_from_json(json["comment"])
         duration = json["timeSpentSeconds"]
 
-        start = datetime.strptime(start_str, "%Y-%m-%dT%H:%M:%S.000-%z")
+        start = datetime.strptime(start_str, "%Y-%m-%dT%H:%M:%S.000%z")
         end = start + timedelta(seconds=duration)
 
         return TimeEntry(start, end, description)
